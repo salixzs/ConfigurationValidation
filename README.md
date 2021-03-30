@@ -1,18 +1,18 @@
 # ConfigurationValidation
-Provides means to validate configuration objects, which are normally loaded from any configuration sources. 
+Provides means to validate strongly typed configuration class properties for common configuration value (kind) validity. Built in e-mail, URL, IP address, string and numeric values validators along with generic and custom validation possibility.
 
-Validation for configuration objects are performed entirely (does not throw exceptions on first failure). Handling validated values is upon application business logic - you. There is special exception type provided, if throwing exception is required.
+Validation for configuration objects are performed entirely for all class properties (does not throw exception on first failure). Handling validation outcome is upon application business logic. There is special exception type provided, if throwing exception is required.
 
 [![Build & Tests](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml/badge.svg?branch=main)](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml)
 
 ## Usage
-Configuration validation expects configuration (or configuration sections for multiple configuration objects) in files (json/xml/yaml) or environment variables loaded into strongly typed configuration objects.
+Configuration validation expects entire configuration or configuration sections (several configuration objects) which are loaded from configuration files (json/xml/yaml/whatever) or environment variables into strongly typed configuration objects.
 
-These strongly typed configuration objects should implement `IValidatableConfiguration` interface, which demands only `IEnumerable<ConfigurationValidationItem> Validate();` method to be added for this class. This method then performs validations, collects them and returns all found mis-configurations in a collection of `ConfigurationValidationItem`s.
+These strongly typed configuration objects should implement `IValidatableConfiguration` interface, which demands only `IEnumerable<ConfigurationValidationItem> Validate();` method to be added for this class. This method then performs validations, collects them and returns all found misconfigurations in a collection of `ConfigurationValidationItem`s.
 
 Package contains helper class `ConfigurationValidationCollector`, which can considerably ease performing such validations and collecting outcome.
 
-Here is sample of such strongly typed configuration section class:
+Here is sample of such strongly typed configuration/section class:
 
 ```csharp
 public class SampleConfig : IValidatableConfiguration
