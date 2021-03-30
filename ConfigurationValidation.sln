@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.218
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationValidation", "ConfigurationValidation\ConfigurationValidation.csproj", "{B9ED788F-CA2B-4667-A16B-4C6770752494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationValidation", "Source\ConfigurationValidation\ConfigurationValidation.csproj", "{B9ED788F-CA2B-4667-A16B-4C6770752494}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationValidation.Tests", "ConfigurationValidation.Tests\ConfigurationValidation.Tests.csproj", "{FA83FBB2-5232-4B4A-AF85-E6DCFB069D60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationValidation.Tests", "Source\ConfigurationValidation.Tests\ConfigurationValidation.Tests.csproj", "{FA83FBB2-5232-4B4A-AF85-E6DCFB069D60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

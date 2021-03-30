@@ -4,7 +4,7 @@ using ConfigurationValidation;
 
 namespace ConsoleWithConfiguration
 {
-    public class SampleConfig
+    public class SampleConfig : IValidatableConfiguration
     {
         public int SomeValue { get; set; }
         public short SomeShortValue { get; set; }
@@ -36,13 +36,13 @@ namespace ConsoleWithConfiguration
             validations.ValidateMust(c => c.SomeEndpoint.EndsWith("/", StringComparison.OrdinalIgnoreCase), nameof(this.SomeEndpoint), "Enpoint should end with shash /.");
             validations.ValidateMust(c =>
                 c.SomeName.Contains("sparta", StringComparison.OrdinalIgnoreCase)
-                && c.SomeValue > 10,
+                    && c.SomeValue > 10,
                 $"{nameof(this.SomeName)} and {nameof(this.SomeValue)}",
                 "Combined validations failed.");
 
             // Syntactic sugar
             validations.ValidateStartsWith(c => c.SomeEndpoint, "https", "Enpoint is no SSL secured.");
-            validations.ValidateEndsWith(c => c.SomeEndpoint, "/", "Enpoint is no SSL secured.");
+            validations.ValidateEndsWith(c => c.SomeEndpoint, "/", "Enpoint should end in slash /.");
 
             // Returning all found validation problems
             return validations.Result;
