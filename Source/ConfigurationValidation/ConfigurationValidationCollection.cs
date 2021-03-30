@@ -9,7 +9,7 @@ namespace ConfigurationValidation
     [Serializable]
     public class ConfigurationValidationCollection
     {
-        private readonly ArrayList _validations = new ArrayList();
+        private readonly ArrayList _validations = new();
 
         /// <summary>
         /// Collection for validations found with their location and values.

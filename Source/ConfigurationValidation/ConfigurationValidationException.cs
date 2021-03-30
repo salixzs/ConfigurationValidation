@@ -13,7 +13,7 @@ namespace ConfigurationValidation
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ConfigurationValidationException : Exception
     {
-        private readonly ConfigurationValidationCollection _validations = new ConfigurationValidationCollection();
+        private readonly ConfigurationValidationCollection _validations = new();
 
         public ConfigurationValidationCollection ValidationData => _validations;
 

@@ -3,6 +3,8 @@ Provides means to validate configuration objects, which are normally loaded from
 
 Validation for configuration objects are performed entirely (does not throw exceptions on first failure). Handling validated values is upon application business logic - you. There is special exception type provided, if throwing exception is required.
 
+[![Build & Tests](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml/badge.svg?branch=main)](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml)
+
 ## Usage
 Configuration validation expects configuration (or configuration sections for multiple configuration objects) in files (json/xml/yaml) or environment variables loaded into strongly typed configuration objects.
 

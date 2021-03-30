@@ -2,6 +2,38 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Label="NuGet related">
+    <Authors>Anrijs Vitolins;GitHub contributors</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugSymbols>true</DebugSymbols>
+    <PackageTags>configuration;validation</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>config-validation.png</PackageIcon>
+    <Description>
+      Provides means to validate strongly typed configuration class properties for common configuration value (kind) validity.
+      Built in e-mail, URL, IP address, string and numeric values validators along with generic and custom validation possibility.
+    </Description>
+    <PackageProjectUrl>https://github.com/salixzs/ConfigurationValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/salixzs/ConfigurationValidation</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <PackageReleaseNotes>
+      Initial version.
+    </PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../config-validation.png" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
+  
 </Project>

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading;
 
+#pragma warning disable IDE0008 // Use explicit type - here var is better for readability
 namespace ConfigurationValidation
 {
     /// <summary>
@@ -314,7 +315,7 @@ namespace ConfigurationValidation
         /// <returns>Tuple of both values.</returns>
         private (string PropertyName, T PropertyValue) GetNameAndValue<T>(Expression<Func<TCfg, T>> expression)
         {
-            if (!(expression.Body is MemberExpression body))
+            if (expression.Body is not MemberExpression body)
             {
                 throw new ApplicationException("Can validate only configuration member expressions. Please use configuration property in form c => c.Property");
             }
@@ -370,4 +371,5 @@ namespace ConfigurationValidation
             return false;
         }
     }
+#pragma warning restore IDE0008 // Use explicit type
 }
