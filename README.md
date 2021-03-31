@@ -94,6 +94,92 @@ and then handle its property `ex.ValidationData` in some general exception handl
 
 Using interface on configuration with IoC container allows to do some magic of finding all these classes and performing validations in centralized manner.
 
+### Usage in AspNetCore Web API/app
+
+In ASP.NET Core you can act on configuration validation results in several ways, starting from preventing app startup with IStartupFilter and least intrusive - as HealthCheck.
+
+Three approaches are shown in another repository Sample project: [Salix.AspNetCore.Utilities](https://github.com/salixzs/AspNetCore.Utilities) and are briefly described below
+
+#### Registering validatable configurations with IoC
+
+First register all your strongly typed configuration class objects with IoC (services):
+
+```csharp
+// With configuration as IOptions
+services.Configure<SampleConfig>(_configuration.GetSection("SampleConfig"));
+// As normal singleton instance for injection
+services.AddSingleton(ctx => ctx.GetRequiredService<IOptions<SampleConfig>>().Value);
+// As IValidatableConfiguration instance for "automatic" validations
+services.AddSingleton<IValidatableConfiguration>(ctx => ctx.GetRequiredService<IOptions<SampleConfig>>().Value);
+```
+
+#### IStartupFilter
+
+This is most invasive approach as there are no apparent visible display for reasons of application "crash" during startup.
+
+Create class, implementing `IStartupFilter`, which takes all `IValidatableConfiguration` instances, validates them and throws exception if any misconfigurations are found.
+
+```csharp
+public class ConfigurationValidationStartupFilter : IStartupFilter
+{
+    private readonly IEnumerable<IValidatableConfiguration> _cfgs;
+
+    // Constructor gets injected all instances of validatable condifuration objects
+    public ConfigurationValidationStartupFilter(IEnumerable<IValidatableConfiguration> cfgs)
+        => _cfgs = cfgs;
+
+    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+    {
+        var fails = new List<ConfigurationValidationItem>();
+        foreach (IValidatableConfiguration cfg in _cfgs)
+        {
+            // Runs Validation on all instances and collects outcomes
+            fails.AddRange(cfg.Validate());
+        }
+
+        if (fails.Count > 0)
+        {
+            // If any found - throws special exception
+            throw new ConfigurationValidationException("There are issues with configuration.", fails);
+        }
+
+        return next;
+    }
+}
+```
+
+Then register this filter as well in Startup ConfigureServices method.
+
+```csharp
+services.AddTransient<IStartupFilter, ConfigurationValidationStartupFilter>();
+```
+
+Upon Asp.Net Core application startup - this filter will be invoked and will end up in application "crash". You will have to dig up reasons for crash via application monitoring and environment logs.
+
+This filter is provided in [Salix.AspNetCore.Utilities](https://github.com/salixzs/AspNetCore.Utilities) repository/package.
+
+#### Error information (page) middleware
+
+Less intrusive approach as it allows you to get some visible response from your application when changes are deployed. Application itself will not work, but you will get whatever you set to return in this middleware component.
+
+It is quite similar to Developer Error page, you can create something, which returns HTML contents to requesting party (e.g. browser) via this middleware component.
+It is quite a code sample to be shown here. See example in [Salix.AspNetCore.Utilities](https://github.com/salixzs/AspNetCore.Utilities) repository (or use it :-) ). 
+
+In essence you should do the same as in IStartupFilter implementation above, just in case of validations - change `Response` to some information, invoke its WriteAsync with content and do not call `await next`.
+
+Register your middleware in Startup Configure method in the very beginning of that method.
+```csharp
+app.UseMiddleware<ConfigurationValidationMiddleware>();
+```
+
+#### HealthCheck
+
+Standard approach with [Microsoft.Extensions.Diagnostics.HealthChecks](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-5.0) package implementation.
+This is least intrusive approach and will not prevent your application from starting up (unless misconfiguration itself prevents it).
+As with middleware - see example for such HealthCheck in [Salix.AspNetCore.Utilities](https://github.com/salixzs/AspNetCore.Utilities) repository (or use it :-) ).
+
+When using HealthCheck-ing approach - make sure you actually check the health of your app deployment with it.
+
 ## How to install
 You add `ConfigurationValidation` package to all projects, where your strongly typed configuration classes are either with Visual Studio NuGet manager or from command line:
 ```
@@ -111,7 +197,7 @@ Then in your code files add on top
 using ConfigurationValidation;
 ...
 ```
-to get access to all provided functionality.
+to get access to all package functionality.
 
 ## Provided validations
 There are number of ready-made validations provided for values in your configuration objects as methods on `ConfigurationValidationCollector` class.
