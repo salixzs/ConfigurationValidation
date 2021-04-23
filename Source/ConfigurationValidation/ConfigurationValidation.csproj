@@ -17,8 +17,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>config-validation.png</PackageIcon>
     <Description>
-      Provides means to validate strongly typed configuration class properties for common configuration value (kind) validity.
-      Built in e-mail, URL, IP address, string and numeric values validators along with generic and custom validation possibility.
+Provides means to validate strongly typed configuration class properties for commonly used configuration value kinds.
+Built in e-mail, URL, IP address, string and numeric values validators along with generic and custom validation possibility.
     </Description>
     <PackageProjectUrl>https://github.com/salixzs/ConfigurationValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/salixzs/ConfigurationValidation</RepositoryUrl>

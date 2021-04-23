@@ -3,7 +3,7 @@ Provides means to validate strongly typed configuration class properties for com
 
 Validation for configuration objects are performed entirely for all class properties (does not throw exception on first failure). Handling validation outcome is upon application business logic. There is special exception type provided, if throwing exception is required.
 
-[![Build & Tests](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml/badge.svg?branch=main)](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml)
+[![Build & Tests](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml/badge.svg?branch=main)](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml) [![Nuget version](https://img.shields.io/nuget/v/ConfigurationValidation.svg)](https://www.nuget.org/packages/ConfigurationValidation/) [![NuGet Downloads](https://img.shields.io/nuget/dt/ConfigurationValidation.svg)](https://www.nuget.org/packages/ConfigurationValidation/)
 
 ## Usage
 Configuration validation expects entire configuration or configuration sections (several configuration objects) which are loaded from configuration files (json/xml/yaml/whatever) or environment variables into strongly typed configuration objects.
@@ -182,7 +182,7 @@ When using HealthCheck-ing approach - make sure you actually check the health of
 
 ## How to install
 You add `ConfigurationValidation` package to all projects, where your strongly typed configuration classes are either with Visual Studio NuGet manager or from command line:
-```
+```plaintext
 PM> Install-Package ConfigurationValidation
 ```
 
