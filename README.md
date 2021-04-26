@@ -279,3 +279,6 @@ Second parameter should contain name(s) of configuration class properties, which
 var validations = new ConfigurationValidationCollector<SampleConfig>(this);
 validations.ValidateMust(c => c.Property1 > 2000 && c.Property2 == "year", "Property1&2", "Combined validation failed.");
 ```
+
+### Like what I created?
+<a href="https://www.buymeacoffee.com/salixzs" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 32px !important;width: 146px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
