@@ -1,18 +1,36 @@
 # ConfigurationValidation
-Provides means to validate strongly typed configuration class properties for common configuration value (kind) validity. Built in e-mail, URL, IP address, string and numeric values validators along with generic and custom validation possibility.
+Provides means to validate strongly typed configuration class properties for common configuration value validity. Built in e-mail, URL, IP address, string and numeric value validators along with generic and custom validation possibility.
 
 Validation for configuration objects are performed entirely for all class properties (does not throw exception on first failure). Handling validation outcome is upon application business logic. There is special exception type provided, if throwing exception is required.
 
 [![Build & Tests](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml/badge.svg?branch=main)](https://github.com/salixzs/ConfigurationValidation/actions/workflows/build_test.yml) [![Nuget version](https://img.shields.io/nuget/v/ConfigurationValidation.svg)](https://www.nuget.org/packages/ConfigurationValidation/) [![NuGet Downloads](https://img.shields.io/nuget/dt/ConfigurationValidation.svg)](https://www.nuget.org/packages/ConfigurationValidation/)
 
-## Usage
-Configuration validation expects entire configuration or configuration sections (several configuration objects) which are loaded from configuration files (json/xml/yaml/whatever) or environment variables into strongly typed configuration objects.
+Package is very lightweight, targeting .Net Standard 2.0 (works with .Net Framework 4.7.2+ and .Net Core 2+) and does not have any other external dependencies.
 
-These strongly typed configuration objects should implement `IValidatableConfiguration` interface, which demands only `IEnumerable<ConfigurationValidationItem> Validate();` method to be added for this class. This method then performs validations, collects them and returns all found misconfigurations in a collection of `ConfigurationValidationItem`s.
+## Usage
+Configuration validation works with strongly typed POCO classes where entire configuration or configuration sections (several configuration classes) are loaded from configuration files (json/xml/yaml/whatever) or environment variables into these class objects.
+
+Imagine you have this POCO class, holding configuration values, loaded from some configuration files (e.g. Microsoft.Extensions.Configuration.* IOptions usage).
+
+```csharp
+public class SampleConfig
+{
+    // Here are properties of configuration values, filled from some configuration.
+    public int SomeValue { get; set; }
+    public short SomeShortValue { get; set; }
+    public long SomeLongValue { get; set; }
+    public string SomeName { get; set; }
+    public string SomeEndpoint { get; set; }
+    public string SomeEmail { get; set; }
+    public string SomeIp { get; set; }
+}
+```
+
+To add validation for loaded values during runtime, you have to slightly extend these classes - they should implement `IValidatableConfiguration` interface, which demands only `IEnumerable<ConfigurationValidationItem> Validate();` method to be added for this class. This method then performs validations, collects them and returns all found misconfigurations in a collection of `ConfigurationValidationItem`s.
 
 Package contains helper class `ConfigurationValidationCollector`, which can considerably ease performing such validations and collecting outcome.
 
-Here is sample of such strongly typed configuration/section class:
+Here is sample of such strongly typed configuration/section class after modifications:
 
 ```csharp
 public class SampleConfig : IValidatableConfiguration
