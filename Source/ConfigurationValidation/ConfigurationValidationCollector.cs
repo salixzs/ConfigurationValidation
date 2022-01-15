@@ -19,6 +19,9 @@ namespace ConfigurationValidation
         private readonly string _validationSectionName;
         private readonly TCfg _configurationSection;
 
+        /// <summary>
+        /// A resulting list of configuration validations.
+        /// </summary>
         public List<ConfigurationValidationItem> Result { get; } = new List<ConfigurationValidationItem>();
 
         /// <summary>

@@ -2,13 +2,22 @@ using System;
 
 namespace ConfigurationValidation
 {
+    /// <summary>
+    /// One configuation item definition.
+    /// </summary>
     [Serializable]
     public class ConfigurationValidationItem
     {
+        /// <summary>
+        /// One configuation item definition.
+        /// </summary>
         public ConfigurationValidationItem()
         {
         }
 
+        /// <summary>
+        /// One configuation item definition.
+        /// </summary>
         public ConfigurationValidationItem(string section, string item, object value, string message)
         {
             this.ConfigurationSection = section;
@@ -37,7 +46,9 @@ namespace ConfigurationValidation
         /// </summary>
         public string ValidationMessage { get; set; }
 
-
+        /// <summary>
+        /// String representation of configution item.
+        /// </summary>
         public override string ToString() => $"{this.ConfigurationSection}:{this.ConfigurationItem} = {this.ConfigurationValue} ({this.ValidationMessage})";
     }
 }
