@@ -1,4 +1,5 @@
 using System;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ConfigurationValidation
 {
@@ -13,12 +14,15 @@ namespace ConfigurationValidation
         /// </summary>
         public ConfigurationValidationItem()
         {
+            this.ConfigurationSection = string.Empty;
+            this.ConfigurationItem = string.Empty;
+            this.ValidationMessage = "Configuration value missing or incorrect.";
         }
 
         /// <summary>
         /// One configuation item definition.
         /// </summary>
-        public ConfigurationValidationItem(string section, string item, object value, string message)
+        public ConfigurationValidationItem(string section, string item, object? value, string message)
         {
             this.ConfigurationSection = section;
             this.ConfigurationItem = item;
@@ -39,7 +43,7 @@ namespace ConfigurationValidation
         /// <summary>
         /// Received faulty configuration value.
         /// </summary>
-        public object ConfigurationValue { get; set; }
+        public object? ConfigurationValue { get; set; }
 
         /// <summary>
         /// Validation message, describing problem with given <see cref="ConfigurationValue"/>.

@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DebugType>portable</DebugType>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet related">
@@ -29,11 +30,12 @@ Built in e-mail, URL, IP address, string and numeric value validators along with
     <PackageReadmeFile>nuget_readme.md</PackageReadmeFile>
     
     <PackageReleaseNotes>
-Include intellisense comments. Upgrade depencencies. Upgrade to .Net 6. No API changes.
+Added ValidateAddCustom extension to add self-validated (outside this package) validation message to collection.
+Enforced nullability. Fixed IntelliSense Docs. .Net 7 for internal tests.
     </PackageReleaseNotes>
-    <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

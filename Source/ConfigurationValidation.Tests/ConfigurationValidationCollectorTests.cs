@@ -17,6 +17,20 @@ namespace ConfigurationValidation.Tests
         }
 
         [Fact]
+        public void AddCustom_Validation()
+        {
+            var cfg = new TestConfig { SomeName = "Wrong" };
+            var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
+            coll.ValidateAddCustom(c => c.SomeName, "This is wrong!");
+            coll.Result.Should().NotBeNull();
+            coll.Result.Count.Should().Be(1);
+            coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
+            coll.Result[0].ConfigurationItem.Should().Be("SomeName");
+            coll.Result[0].ConfigurationValue.Should().Be("Wrong");
+            coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
+        }
+
+        [Fact]
         public void IntNotZero_Validation()
         {
             var cfg = new TestConfig { SomeValue = 0 };
