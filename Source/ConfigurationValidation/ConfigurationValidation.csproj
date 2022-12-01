@@ -30,12 +30,11 @@ Built in e-mail, URL, IP address, string and numeric value validators along with
     <PackageReadmeFile>nuget_readme.md</PackageReadmeFile>
     
     <PackageReleaseNotes>
-Added ValidateAddCustom extension to add self-validated (outside this package) validation message to collection.
-Enforced nullability. Fixed IntelliSense Docs. .Net 7 for internal tests.
+Bugfix. Handling Unary expressions, which were missing.
     </PackageReleaseNotes>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.1</Version>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

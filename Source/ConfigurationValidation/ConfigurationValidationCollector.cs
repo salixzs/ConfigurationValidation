@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using System.Threading;
 
 #pragma warning disable IDE0008 // Use explicit type - here var is better for readability
@@ -62,7 +63,7 @@ namespace ConfigurationValidation
         /// </summary>
         /// <param name="configurationProperty">Expression to point to property.</param>
         /// <param name="message">Validation message to display when validation fails.</param>
-        public void ValidateAddCustom(Expression<Func<TCfg, string>> configurationProperty, string message)
+        public void ValidateAddCustom(Expression<Func<TCfg, object>> configurationProperty, string message)
         {
             var (propertyName, propertyValue) = this.GetNameAndValue(configurationProperty);
             this.Result.Add(new ConfigurationValidationItem(_validationSectionName, propertyName, propertyValue, message));
@@ -333,13 +334,22 @@ namespace ConfigurationValidation
         /// <returns>Tuple of both values.</returns>
         private (string PropertyName, T PropertyValue) GetNameAndValue<T>(Expression<Func<TCfg, T>> expression)
         {
-            if (expression.Body is not MemberExpression body)
+            if (expression.Body is MemberExpression body)
             {
-                throw new ApplicationException("Can validate only configuration member expressions. Please use configuration property in form c => c.Property");
+                T propertyValue = expression.Compile().Invoke(_configurationSection);
+                return (body.Member.Name, propertyValue);
             }
 
-            T propertyValue = expression.Compile().Invoke(_configurationSection);
-            return (body.Member.Name, propertyValue);
+            if (expression.Body is UnaryExpression unaryOperation
+                && unaryOperation.Operand != null
+                && unaryOperation.Operand is MemberExpression unaryOperationOperand
+                && unaryOperationOperand.Member is PropertyInfo unaryProperty)
+            {
+                T propertyValue = expression.Compile().Invoke(_configurationSection);
+                return (unaryProperty.Name, propertyValue);
+            }
+
+            throw new ApplicationException("Can validate only configuration member expressions. Please use configuration property in form c => c.Property");
         }
 
         /// <summary>

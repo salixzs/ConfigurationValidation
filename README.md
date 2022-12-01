@@ -73,6 +73,9 @@ public class SampleConfig : IValidatableConfiguration
         // Syntactic sugar
         validations.ValidateStartsWith(c => c.SomeEndpoint, "https", "Enpoint is no SSL secured.");
         validations.ValidateEndsWith(c => c.SomeEndpoint, "/", "Enpoint should end in slash character.");
+        
+        //... Here some own validation done on e-mail address, adding error message to collection
+        validations.ValidateAddCustom(c => c.SomeEmail, "Custom validate failed.");
 
         // Returning all found validation problems
         return validations.Result;
@@ -207,7 +210,7 @@ PM> Install-Package ConfigurationValidation
 In your project(s) csproj this should appear:
 
 ```xml
-<PackageReference Include="ConfigurationValidation" Version="1.0.0" />
+<PackageReference Include="ConfigurationValidation" Version="1.1.1" />
 ```
 
 Then in your code files add on top 
@@ -297,6 +300,14 @@ Second parameter should contain name(s) of configuration class properties, which
 var validations = new ConfigurationValidationCollector<SampleConfig>(this);
 validations.ValidateMust(c => c.Property1 > 2000 && c.Property2 == "year", "Property1&2", "Combined validation failed.");
 ```
+
+#### `ValidateAddCustom`
+This simply adds an validation error on given property, assuming you ran some own custom validation on this property and made sure it does not Contain expected value.
+```csharp
+var validations = new ConfigurationValidationCollector<SampleConfig>(this);
+validations.ValidateAddCustom(c => c.ComplexValueProperty, "Checked myself - this is wrong!");
+```
+
 
 ### Like what I created?
 <a href="https://www.buymeacoffee.com/salixzs" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 32px !important;width: 146px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>

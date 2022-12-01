@@ -17,7 +17,7 @@ namespace ConfigurationValidation.Tests
         }
 
         [Fact]
-        public void AddCustom_Validation()
+        public void AddCustom_String_Validation()
         {
             var cfg = new TestConfig { SomeName = "Wrong" };
             var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
@@ -27,6 +27,78 @@ namespace ConfigurationValidation.Tests
             coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
             coll.Result[0].ConfigurationItem.Should().Be("SomeName");
             coll.Result[0].ConfigurationValue.Should().Be("Wrong");
+            coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
+        }
+
+        [Fact]
+        public void AddCustom_IncludedString_Validation()
+        {
+            var cfg = new TestConfig { SomeName = "Wrong" };
+            var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
+            coll.ValidateAddCustom(c => c.Included.DeepString, "This is wrong!");
+            coll.Result.Should().NotBeNull();
+            coll.Result.Count.Should().Be(1);
+            coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
+            coll.Result[0].ConfigurationItem.Should().Be("DeepString");
+            coll.Result[0].ConfigurationValue.Should().Be("Hmmm");
+            coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
+        }
+
+        [Fact]
+        public void AddCustom_Int_Validation()
+        {
+            var cfg = new TestConfig { SomeValue = 15 };
+            var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
+            coll.ValidateAddCustom(c => c.SomeValue, "This is wrong!");
+            coll.Result.Should().NotBeNull();
+            coll.Result.Count.Should().Be(1);
+            coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
+            coll.Result[0].ConfigurationItem.Should().Be("SomeValue");
+            coll.Result[0].ConfigurationValue.Should().Be(15);
+            coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
+        }
+
+        [Fact]
+        public void AddCustom_IncludedInt_Validation()
+        {
+            var cfg = new TestConfig { SomeValue = 15 };
+            var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
+            coll.ValidateAddCustom(c => c.Included.IncludedId, "This is wrong!");
+            coll.Result.Should().NotBeNull();
+            coll.Result.Count.Should().Be(1);
+            coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
+            coll.Result[0].ConfigurationItem.Should().Be("IncludedId");
+            coll.Result[0].ConfigurationValue.Should().Be(21);
+            coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
+        }
+
+        [Fact]
+        public void AddCustom_List_Validation()
+        {
+            var cfg = new TestConfig();
+            cfg.SomeNameList.Add("Yipii");
+            cfg.SomeNameList.Add("Youz");
+            var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
+            coll.ValidateAddCustom(c => c.SomeNameList, "This is wrong!");
+            coll.Result.Should().NotBeNull();
+            coll.Result.Count.Should().Be(1);
+            coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
+            coll.Result[0].ConfigurationItem.Should().Be("SomeNameList");
+            coll.Result[0].ConfigurationValue.Should().Be(cfg.SomeNameList);
+            coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
+        }
+
+        [Fact]
+        public void AddCustom_IncludedList_Validation()
+        {
+            var cfg = new TestConfig();
+            var coll = new ConfigurationValidationCollector<TestConfig>(cfg);
+            coll.ValidateAddCustom(c => c.Included.IncludedList, "This is wrong!");
+            coll.Result.Should().NotBeNull();
+            coll.Result.Count.Should().Be(1);
+            coll.Result[0].ConfigurationSection.Should().Be("TestConfig");
+            coll.Result[0].ConfigurationItem.Should().Be("IncludedList");
+            coll.Result[0].ConfigurationValue.Should().Be(cfg.Included.IncludedList);
             coll.Result[0].ValidationMessage.Should().Be("This is wrong!");
         }
 
@@ -526,6 +598,10 @@ namespace ConfigurationValidation.Tests
         public string SomeEndpoint { get; set; }
         public string SomeEmail { get; set; }
         public string SomeIp { get; set; }
+        public int? NullableId { get; set; }
+        public string? OptionalString { get; set; }
+        public List<string> SomeNameList { get; set; } = new List<string>();
+        public IncludedConfig Included { get; set; } = new IncludedConfig();
 
         /// <summary>
         /// Performs the validation of this configuration object.
@@ -560,5 +636,12 @@ namespace ConfigurationValidation.Tests
             // Returning all found validation problems
             return validations.Result;
         }
+    }
+
+    public class IncludedConfig
+    {
+        public string DeepString { get; set; } = "Hmmm";
+        public int IncludedId { get; set; } = 21;
+        public List<string> IncludedList { get; set; } = new List<string> { "Uno", "Due" };
     }
 }
